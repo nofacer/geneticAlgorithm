@@ -1,11 +1,12 @@
 from unittest import TestCase
+from utils import cal_node_amount, cal_max_children_number, create_layout
 from functionnode import FunctionNode
 from functionwrapper import FunctionWrapper
 from paramnode import ParamNode
 from constnode import ConstNode
 
 
-class TestFunctionNode(TestCase):
+class TestUtils(TestCase):
     def setUp(self):
         add_wrapper = FunctionWrapper(lambda l: l[0] + l[1], 2, 'add')
         mul_wrapper = FunctionWrapper(lambda l: l[0] * l[1], 2, 'multiply')
@@ -18,17 +19,15 @@ class TestFunctionNode(TestCase):
         self.node_tree = FunctionNode(mul_wrapper, [
             FunctionNode(add_wrapper, [FunctionNode(add_wrapper, [parameter_x, const_1]), parameter_y]), parameter_y])
 
-    def test_forward(self):
-        result = self.node_tree.forward([2, 3])
-        self.assertEqual(result, 18)
+    def test_cal_node_amount(self):
+        self.assertEqual(7, cal_node_amount(self.node_tree))
 
-    def test_display(self):
-        result = self.node_tree.display()
-        expected_result = "multiply\n" \
-                          + " add\n" \
-                          + "  add\n" \
-                          + "   x\n" \
-                          + "   1\n" \
-                          + "  y\n" \
-                          + " y\n"
-        self.assertEqual(expected_result, result)
+    def test_max_child_count(self):
+        self.assertEqual(2, cal_max_children_number(self.node_tree))
+
+    def test_create_layout(self):
+        expect_result = (
+            ['multiply_0', 'add_0', 'add_1', 'x_0', '1_0', 'y_0', 'y_1'],
+            [(0, 1), (1, 2), (2, 3), (2, 4), (1, 5), (0, 6)]
+        )
+        self.assertEqual(expect_result, create_layout(self.node_tree))

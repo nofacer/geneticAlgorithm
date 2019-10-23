@@ -1,19 +1,22 @@
-import dash
 import plotly.graph_objects as go
-from igraph import Graph, EdgeSeq
+from igraph import Graph
+from utils import cal_node_amount, create_layout
 
 
 def draw(node_tree):
-    nr_vertices = 26
-    v_label = list(map(str, range(nr_vertices)))
-    G = Graph.Tree(nr_vertices, 2)  # 2 stands for children number
-    lay = G.layout('rt')
+    vertices_number = cal_node_amount(node_tree)
+    vertices_labels = node_tree.display().replace(" ", "").strip().split("\n")  # DLR
+    node_list, edge_list = create_layout(node_tree)
 
-    position = {k: lay[k] for k in range(nr_vertices)}
-    Y = [lay[k][1] for k in range(nr_vertices)]
+    G = Graph(n=vertices_number)
+    G.add_edges(edge_list)
+
+    lay = G.layout_reingold_tilford(mode="in", root=[0], rootlevel=None)
+
+    position = {k: lay[k] for k in range(vertices_number)}
+    Y = [lay[k][1] for k in range(vertices_number)]
     M = max(Y)
 
-    es = EdgeSeq(G)  # sequence of edges
     E = [e.tuple for e in G.es]  # list of edges
 
     L = len(position)
@@ -25,7 +28,7 @@ def draw(node_tree):
         Xe += [position[edge[0]][0], position[edge[1]][0], None]
         Ye += [2 * M - position[edge[0]][1], 2 * M - position[edge[1]][1], None]
 
-    labels = v_label
+    labels = vertices_labels
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=Xe,
@@ -39,7 +42,7 @@ def draw(node_tree):
                              mode='markers',
                              name='bla',
                              marker=dict(symbol='circle-dot',
-                                         size=18,
+                                         size=50,
                                          color='#6175c1',  # '#DB4551',
                                          line=dict(color='rgb(50,50,50)', width=1)
                                          ),
@@ -70,9 +73,9 @@ def draw(node_tree):
                 showticklabels=False,
                 )
 
-    fig.update_layout(title='Tree with Reingold-Tilford Layout',
-                      annotations=make_annotations(position, v_label),
-                      font_size=12,
+    fig.update_layout(title='Generated Program Tree',
+                      annotations=make_annotations(position, vertices_labels),
+                      font_size=18,
                       showlegend=False,
                       xaxis=axis,
                       yaxis=axis,
@@ -81,6 +84,3 @@ def draw(node_tree):
                       plot_bgcolor='rgb(248,248,248)'
                       )
     fig.show()
-
-
-draw(None)

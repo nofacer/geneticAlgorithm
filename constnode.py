@@ -1,6 +1,8 @@
 class ConstNode:
     def __init__(self, value):
         self.value = value
+        self.name = str(value)
+        self.id = None
 
     def forward(self, input):
         return self.value

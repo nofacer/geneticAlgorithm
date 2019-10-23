@@ -2,6 +2,7 @@ class ParamNode:
     def __init__(self, idx, name):
         self.idx = idx
         self.name = name
+        self.id = None
 
     def forward(self, input):
         return input[self.idx]
