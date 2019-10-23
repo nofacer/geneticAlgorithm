@@ -1,5 +1,5 @@
 from unittest import TestCase
-from paramnode import ParamNode
+from Nodes import ParamNode
 
 
 class TestParamNode(TestCase):

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from constnode import ConstNode
+from Nodes import ConstNode
 
 
 class TestConstNode(TestCase):

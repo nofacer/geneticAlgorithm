@@ -1,4 +1,17 @@
-from visualize_tree import draw
+class ConstNode:
+    def __init__(self, value):
+        self.value = value
+        self.name = str(value)
+        self.id = None
+
+    def forward(self, input):
+        return self.value
+
+    def display(self, indent):
+        return "{}{}\n".format(" " * indent, self.value)
+
+    def cal_node_amount(self):
+        return 1
 
 
 class FunctionNode:
@@ -24,5 +37,18 @@ class FunctionNode:
             display_string += child.display(indent + 1)
         return display_string
 
-    def vis(self):
-        draw(self)
+
+class ParamNode:
+    def __init__(self, idx, name):
+        self.idx = idx
+        self.name = name
+        self.id = None
+
+    def forward(self, input):
+        return input[self.idx]
+
+    def display(self, indent):
+        return "{}{}\n".format(" " * indent, self.name)
+
+    def cal_node_amount(self):
+        return 1
