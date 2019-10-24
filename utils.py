@@ -3,9 +3,10 @@ from plotly import graph_objects as go
 
 from Functions import FunctionWrapper
 from Nodes import ConstNode, FunctionNode, ParamNode
+from random import *
 
 
-def exampletree():
+def example_tree():
     add_wrapper = FunctionWrapper(lambda l: l[0] + l[1], 2, 'add')
     mul_wrapper = FunctionWrapper(lambda l: l[0] * l[1], 2, 'multiply')
 
@@ -146,3 +147,16 @@ def draw(node_tree):
                       plot_bgcolor='rgb(248,248,248)'
                       )
     fig.show()
+
+
+def make_random_tree(parameter_count, function_list, max_depth=4, function_node_p=0.5, parameter_node_p=0.6):
+    if random() < function_node_p and max_depth > 0:
+        f = choice(function_list)
+        children = [make_random_tree(parameter_count, function_list, max_depth - 1, function_node_p, parameter_node_p)
+                    for _ in range(f.child_count)]
+        return FunctionNode(f, children)
+    elif random() < parameter_node_p:
+        number = randint(0, parameter_count - 1)
+        return ParamNode(number, chr(number + 97))
+    else:
+        return ConstNode(randint(0, 10))

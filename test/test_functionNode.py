@@ -4,7 +4,7 @@ from utils import *
 
 class TestFunctionNode(TestCase):
     def setUp(self):
-        self.node_tree = exampletree()
+        self.node_tree = example_tree()
 
     def test_forward(self):
         result = self.node_tree.forward([2, 3])

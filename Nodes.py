@@ -7,7 +7,7 @@ class ConstNode:
     def forward(self, input):
         return self.value
 
-    def display(self, indent):
+    def display(self, indent=0):
         return "{}{}\n".format(" " * indent, self.value)
 
     def cal_node_amount(self):
@@ -47,7 +47,7 @@ class ParamNode:
     def forward(self, input):
         return input[self.idx]
 
-    def display(self, indent):
+    def display(self, indent=0):
         return "{}{}\n".format(" " * indent, self.name)
 
     def cal_node_amount(self):

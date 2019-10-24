@@ -3,7 +3,7 @@ from utils import *
 
 class TestUtils(TestCase):
     def setUp(self):
-        self.node_tree = exampletree()
+        self.node_tree = example_tree()
 
     def test_cal_node_amount(self):
         self.assertEqual(7, cal_node_amount(self.node_tree))
