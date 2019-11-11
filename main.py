@@ -1,10 +1,11 @@
 from utils import *
-from Functions import Functions
 
-functions = Functions()
+from Env import *
 
-flist = [functions.add_f, functions.subtract_f, functions.multiply_f, functions.if_f, functions.greater_f]
-random_tree = make_random_tree(2, flist)
 
-draw(random_tree)
-print(random_tree.forward([1, 2]))
+
+
+dataset = build_hidden_set()
+rank_function = getrankfunction(dataset)
+t=evolve(2,200,rank_function)
+draw(t)
